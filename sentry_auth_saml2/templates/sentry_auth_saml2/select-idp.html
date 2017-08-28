@@ -1,0 +1,84 @@
+{% extends "sentry/bases/auth.html" %}
+
+{% block auth_main %}
+  <div class="box">
+    <div class="box-content with-padding">
+      <h3>Register IdP data</h3>
+
+      <div class="help-block">Contact the IdP administrator and ask him for the IdP metadata and its public x509 certificate. You can:</div>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% if plugin %}
+            <input type="hidden" name="plugin" value="{{ plugin.slug }}" />
+        {% endif %}
+
+        <hr>
+        <div class="help-block">
+        {% if error_url %}
+            <div class="alert alert-block alert-error">There was an error trying to retrieve and parse the metadata.</div>
+        {% endif %}
+        1. Use the metadata url retrieval method 
+        <a id="get_metadata_toggle" class="align-right" style="display:inline-block;">{% if not error_url %}[+]{% else %}[-]{% endif%}</a>
+        </div>
+        <div id="get_metadata_section" {% if not error_url %} style="display:none;" {% endif %}>
+            <input class="textinput textInput form-control" id="idp_metadata_url" name="idp_metadata_url" type="url" value="{{ url }}" />
+            <fieldset class="align-right">
+              <div class="form-actions-samlidp">
+                <button type="submit" class="btn btn-primary" name="action_get_metadata">Get metadata</button>
+              </div>
+            </fieldset>
+        </div>
+        <hr>
+        <div class="help-block">
+        {% if error_xml %}
+            <div class="alert alert-block alert-error">There was an error trying to parse the XML of the metadata.</div>
+        {% endif %}
+        2. Paste the metadata XML
+        <a id="parse_metadata_toggle" class="align-right" style="display:inline-block;">{% if not error_xml %}[+]{% else %}[-]{% endif%}</a>
+        </div>
+        <div id="parse_metadata_section" {% if not error_xml %}style="display:none;" {% endif %}>
+            <textarea class="textarea form-control" cols="40" id="idp_metadata_xml" name="idp_metadata_xml" rows="10" value="{{ xml }}"></textarea>
+            <fieldset class="align-right">
+              <div class="form-actions-samlidp">
+                <button type="submit" class="btn btn-primary" name="action_parse_metadata">Parse metadata</button>
+              </div>
+            </fieldset>
+        </div>
+
+        <hr>
+        <div class="help-block">3. Directly fill the IdP data form:</div>
+        
+        {% include "sentry/partial/form_base.html" %}
+
+        <fieldset class="align-right">
+          <div class="form-actions-samlidp">
+            <button type="submit" class="btn btn-primary" name="action_save">Save</button>
+          </div>
+        </fieldset>
+    </form>
+
+    </div>
+  </div>
+
+<script>
+function changeToggleIcon(adad) {
+    if (a.text() == '[+]') {
+        a.text('[-]');
+    } else {
+        a.text('[+]');
+    }
+}
+
+$("#get_metadata_toggle").click(function(){
+    $("#get_metadata_section").toggle();
+    changeToggleIcon($(this));
+});
+
+$("#parse_metadata_toggle").click(function(){
+    $("#parse_metadata_section").toggle();
+    changeToggleIcon($(this));
+});
+</script>
+
+{% endblock %}
