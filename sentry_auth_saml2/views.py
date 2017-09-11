@@ -40,7 +40,10 @@ class SelectIdP(AuthView):
     def handle(self, request, helper):
         error_url = error_xml = False
         url = xml = ''
+        op = 'url'
+
         if 'action_save' in request.POST:
+            op = 'idp'
             form = SelectIdPForm(request.POST)
             if form.is_valid():
                 idp_data = SAML2Provider.extract_idp_data_from_form(form)
@@ -52,6 +55,7 @@ class SelectIdP(AuthView):
             form = SelectIdPForm()
             if 'action_get_metadata' in request.POST or 'action_parse_metadata' in request.POST:
                 if 'action_get_metadata' in request.POST:
+                    op = 'url'
                     url = request.POST['idp_metadata_url']
                     error_url = True
                     if url:
@@ -60,6 +64,7 @@ class SelectIdP(AuthView):
                         except:
                             data = None
                 else:
+                    op = 'xml'
                     xml = request.POST['idp_metadata_xml']
                     error_xml = True
                     if xml:
@@ -76,6 +81,7 @@ class SelectIdP(AuthView):
                         return helper.next_step()
 
         return self.respond('sentry_auth_saml2/select-idp.html', {
+            'op': op,
             'form': form,
             'error_url': error_url,
             'url': url,
