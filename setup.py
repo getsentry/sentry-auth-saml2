@@ -20,7 +20,7 @@ setup(
     author='Sentry',
     author_email='support@getsentry.com',
     url='https://www.getsentry.com',
-    description='Generic SAML SSO provider for Sentry',
+    description='SAML SSO provider for Sentry',
     long_description=__doc__,
     license='Apache 2.0',
     package_dir={'': 'src'},
