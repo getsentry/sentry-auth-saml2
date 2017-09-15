@@ -1,0 +1,57 @@
+{% extends "sentry/bases/modal.html" %}
+{% load sentry_assets %}
+{% load i18n %}
+
+{% block wrapperclass %}narrow auth{% endblock %}
+{% block modal_header_signout %}{% endblock %}
+
+{% block title %}{% trans "Register OneLogin" %} | {{ block.super }}{% endblock %}
+
+{% block main %}
+<h3>{% trans "Register OneLogin" %}</h3>
+
+<p>
+  As part of OneLogin SSO provisioning, you must to provide the OneLogin
+  identity provider Issuer URL to Sentry.
+</p>
+
+<form action="" method="post" class="form-stacked">
+  {% csrf_token %}
+
+  {% if plugin %}
+    <input type="hidden" name="plugin" value="{{ plugin.slug }}" />
+  {% endif %}
+
+  <input type="hidden" name="provider" value="onelogin" />
+
+  {% if error_url %}
+    <div class="alert alert-block alert-error">
+      {% trans "There was an error trying to retrieve and parse the metadata." %}
+    </div>
+  {% endif %}
+  {% if error_value %}
+    <div class="alert alert-block alert-error">
+      {% trans "Invalid Issuer URL provided." %}
+    </div>
+  {% endif %}
+
+  <div class="form-group">
+    <label for="metadata_url" label="control-label requiredField">
+      Issuer URL<span class="asteriskField">*</span>
+    </label>
+    <input required="required"
+      class="textinput textInput form-control"
+      id="metadata_url"
+      name="metadata_url"
+      type="text"
+      value="{{ metadata_url }}" />
+  </div>
+
+  <fieldset class="form-actions">
+    <button type="submit" class="btn btn-primary" name="action_save">{% trans "Continue" %}</button>
+    <a class="pull-right" style="margin-top: 7px" href="https://docs.sentry.io/learn/sso/#onelogin">
+      Need help finding your Issuer URL?
+    </a>
+  </fieldset>
+</form>
+{% endblock %}
