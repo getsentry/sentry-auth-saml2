@@ -33,6 +33,7 @@ setup(
     entry_points={
         'sentry.apps': [
             'auth_saml2 = sentry_auth_saml2.generic',
+            'auth_onelogin = sentry_auth_saml2.onelogin',
         ],
     },
     classifiers=[
