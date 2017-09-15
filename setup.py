@@ -23,7 +23,8 @@ setup(
     description='Generic SAML SSO provider for Sentry',
     long_description=__doc__,
     license='Apache 2.0',
-    packages=find_packages(exclude=['tests']),
+    package_dir={'': 'src'},
+    packages=find_packages('src', exclude=['tests']),
     zip_safe=False,
     install_requires=install_requires,
     tests_require=tests_require,
@@ -31,7 +32,7 @@ setup(
     include_package_data=True,
     entry_points={
         'sentry.apps': [
-            'auth_saml2 = sentry_auth_saml2',
+            'auth_saml2 = sentry_auth_saml2.generic',
         ],
     },
     classifiers=[

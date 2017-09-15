@@ -17,7 +17,7 @@ class GenericSAML2ConfigureView(ConfigureView):
                 idp_data = SAML2Provider.extract_idp_data_from_form(form)
                 auth_provider.config['idp'] = idp_data
                 auth_provider.save()
-        else:            
+        else:
             form = SAMLForm(data)
 
         return self.render('sentry_auth_saml2/configure.html', {
