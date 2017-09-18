@@ -6,24 +6,45 @@
 <h3>OneLogin Settings</h3>
 
 <h4>OneLogin IdP Data</h4>
-{% if form.errors %}
+{% if saml_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}
 
-{{ form|as_crispy_errors }}
+{{ saml_form|as_crispy_errors }}
 
-{% for field in form %}
+{% for field in saml_form %}
+    {{ field|as_crispy_field }}
+{% endfor %}
+
+<h4>Options</h4>
+{% if options_form.errors %}
+    <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
+{% endif %}
+
+{{ options_form|as_crispy_errors }}
+
+{% for field in options_form %}
     {{ field|as_crispy_field }}
 {% endfor %}
 
 <h4>Attribute Mapping</h4>
-
-{% if form2.errors %}
+{% if attr_mapping_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}
 
-{{ form2|as_crispy_errors }}
+{{ attr_mapping_form|as_crispy_errors }}
 
-{% for field in form2 %}
+{% for field in attr_mapping_form %}
+    {{ field|as_crispy_field }}
+{% endfor %}
+
+<h4>Advanced Settings</h4>
+{% if advanced_form.errors %}
+    <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
+{% endif %}
+
+{{ advanced_form|as_crispy_errors }}
+
+{% for field in advanced_form %}
     {{ field|as_crispy_field }}
 {% endfor %}
