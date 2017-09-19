@@ -6,7 +6,7 @@ from .views import (
     OneLoginSAML2ConfigureView, SelectIdP
 )
 
-from .constants import ONELOGIN_EMAIL, ONELOGIN_USERNAME, ONELOGIN_DISPLAYNAME
+from .constants import ONELOGIN_EMAIL, ONELOGIN_DISPLAYNAME
 
 
 class OneLoginSAML2Provider(SAML2Provider):
@@ -26,7 +26,6 @@ class OneLoginSAML2Provider(SAML2Provider):
         if data:
             data['attribute_mapping'] = {
                 'attribute_mapping_email': ONELOGIN_EMAIL,
-                'attribute_mapping_username': ONELOGIN_USERNAME,
                 'attribute_mapping_displayname': ONELOGIN_DISPLAYNAME,
             }
         return data
