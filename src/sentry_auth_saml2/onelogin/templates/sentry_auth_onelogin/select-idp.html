@@ -15,37 +15,9 @@
   identity provider Issuer URL to Sentry.
 </p>
 
-<form action="" method="post" class="form-stacked">
-  {% csrf_token %}
-
-  {% if plugin %}
-    <input type="hidden" name="plugin" value="{{ plugin.slug }}" />
-  {% endif %}
-
-  <input type="hidden" name="provider" value="onelogin" />
-
-  {% if error_url %}
-    <div class="alert alert-block alert-error">
-      {% trans "There was an error trying to retrieve and parse the metadata." %}
-    </div>
-  {% endif %}
-  {% if error_value %}
-    <div class="alert alert-block alert-error">
-      {% trans "Invalid Issuer URL provided." %}
-    </div>
-  {% endif %}
-
-  <div class="form-group">
-    <label for="metadata_url" label="control-label requiredField">
-      Issuer URL<span class="asteriskField">*</span>
-    </label>
-    <input required="required"
-      class="textinput textInput form-control"
-      id="metadata_url"
-      name="metadata_url"
-      type="text"
-      value="{{ metadata_url }}" />
-  </div>
+<form method="post" class="form-stacked">
+  {% include "sentry/partial/form_base.html" %}
+  <input type="hidden" name="provider" value="okta" />
 
   <fieldset class="form-actions">
     <button type="submit" class="btn btn-primary" name="action_save">{% trans "Continue" %}</button>
