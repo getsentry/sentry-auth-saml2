@@ -1,4 +1,5 @@
 {% extends "sentry/bases/modal.html" %}
+{% load crispy_forms_tags %}
 {% load sentry_assets %}
 {% load i18n %}
 
@@ -29,59 +30,40 @@
       <input type="hidden" name="plugin" value="{{ plugin.slug }}" />
   {% endif %}
 
+  <input type="hidden" name="provider" value="saml2" />
+
   <div class="tab-content">
     <div class="tab-pane {% if op == "url" %}active{% endif %}" id="metadata-url">
       <p>Provide a Metadata URL to retrieve the IdP details.</p>
 
-      {% if error_url %}
-        <div class="alert alert-block alert-error">
-          There was an error while requesting the metadata.
-        </div>
-      {% endif %}
+      {{ forms.url|as_crispy_errors }}
 
-      <label for="idp_metadata_url" label="control-label requiredField">
-        Metadata URL<span class="asteriskField">*</span>
-      </label>
-      <input
-        class="textinput textInput form-control"
-        id="idp_metadata_url"
-        name="idp_metadata_url"
-        type="url"
-        value="{{ url }}" />
+      {% for field in forms.url %}
+          {{ field|as_crispy_field }}
+      {% endfor %}
 
       <fieldset class="form-actions">
         <button
           type="submit"
           class="btn btn-primary"
-          name="action_get_metadata">{% trans "Get metadata" %}</button>
+          name="action_save" value="url">{% trans "Get metadata" %}</button>
       </fieldset>
     </div>
 
     <div class="tab-pane {% if op == "xml" %}active{% endif %}" id="xml">
       <p>Provide the raw Metadata XML IdP details.</p>
 
-      {% if error_xml %}
-        <div class="alert alert-block alert-error">
-          There was an error while parsing the metadata XML.
-        </div>
-      {% endif %}
+      {{ forms.xml|as_crispy_errors }}
 
-      <label for="idp_metadata_url" label="control-label requiredField">
-        Metadata XML<span class="asteriskField">*</span>
-      </label>
-      <textarea
-        class="textarea form-control"
-        cols="40"
-        rows="10"
-        id="idp_metadata_xml"
-        name="idp_metadata_xml"
-        value="{{ xml }}"></textarea>
+      {% for field in forms.xml %}
+          {{ field|as_crispy_field }}
+      {% endfor %}
 
       <fieldset class="form-actions">
         <button
           type="submit"
           class="btn btn-primary"
-          name="action_parse_metadata">{% trans "Parse Metadata" %}</button>
+          name="action_save" value="xml">{% trans "Parse Metadata" %}</button>
       </fieldset>
     </div>
 
@@ -90,16 +72,19 @@
         Provide your individual Identity Provider metadata fields.
       </p>
 
-      {% include "sentry/partial/form_base.html" %}
+      {{ forms.idp|as_crispy_errors }}
+
+      {% for field in forms.idp %}
+          {{ field|as_crispy_field }}
+      {% endfor %}
 
       <fieldset class="form-actions">
         <button
           type="submit"
           class="btn btn-primary"
-          name="action_save">{% trans "Parse Metadata" %}</button>
+          name="action_save" value="idp">{% trans "Save Metadata" %}</button>
       </fieldset>
     </div>
   </div>
 </form>
-
 {% endblock %}
