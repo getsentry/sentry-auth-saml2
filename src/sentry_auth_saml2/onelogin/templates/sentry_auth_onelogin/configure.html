@@ -1,11 +1,11 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-<div class="pull-right"><a target="_blank" href="{{ sp_metadata_url }}">{% trans "Access to SP metadata" %}</a></div>
+<div class="pull-right">
+  <a target="_blank" href="{{ sp_metadata_url }}">{% trans "Service Provider Metadata" %}</a>
+</div>
 
-<h3>OneLogin Settings</h3>
-
-<h4>OneLogin IdP Data</h4>
+<legend style="margin-top: 0;">OneLogin IdP Data</legend>
 {% if saml_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}
@@ -16,7 +16,7 @@
     {{ field|as_crispy_field }}
 {% endfor %}
 
-<h4>Options</h4>
+<legend>Options</legend>
 {% if options_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}
@@ -27,7 +27,7 @@
     {{ field|as_crispy_field }}
 {% endfor %}
 
-<h4>Attribute Mapping</h4>
+<legend>Attribute Mapping</legend>
 {% if attr_mapping_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}
@@ -38,7 +38,7 @@
     {{ field|as_crispy_field }}
 {% endfor %}
 
-<h4>Advanced Settings</h4>
+<legend>Advanced Settings</legend>
 {% if advanced_form.errors %}
     <div class="alert alert-block alert-error">{% trans "Please correct the errors below." %}</div>
 {% endif %}

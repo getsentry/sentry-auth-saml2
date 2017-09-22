@@ -1,3 +1,9 @@
-<h3>SAML Settings</h3>
+{% load i18n %}
+
+<div class="pull-right">
+  <a target="_blank" href="{{ sp_metadata_url }}">{% trans "Service Provider Metadata" %}</a>
+</div>
+
+<legend style="margin-top: 0;">SAML2 Settings</legend>
 
 {% include "sentry/partial/form_base.html" %}
