@@ -11,7 +11,7 @@ from sentry.auth.providers.saml2 import (
     AUTHNCONTEXT_CHOICES
 )
 from sentry.utils.http import absolute_uri
-from sentry_auth_saml2.generic.views import SAMLForm, URLMetadataForm, process_metadata
+from sentry_auth_saml2.forms import SAMLForm, URLMetadataForm, process_metadata
 
 
 class AdvancedForm(forms.Form):
