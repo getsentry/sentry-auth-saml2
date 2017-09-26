@@ -7,21 +7,6 @@ from onelogin.saml2.idp_metadata_parser import OneLogin_Saml2_IdPMetadataParser
 from sentry.auth.providers.saml2 import SAML2Provider
 
 
-class URLMetadataForm(forms.Form):
-    metadata_url = forms.URLField(label='Metadata URL')
-
-
-class XMLMetadataForm(forms.Form):
-    metadata_xml = forms.CharField(label='Metadata XML', widget=forms.Textarea)
-
-
-class SAMLForm(forms.Form):
-    idp_entityid = forms.CharField(label='IdP Entity ID')
-    idp_sso_url = forms.URLField(label='IdP Single Sign On URL')
-    idp_slo_url = forms.URLField(label='IdP Single Log Out URL', required=False)
-    idp_x509cert = forms.CharField(label='IdP x509 public certificate', widget=forms.Textarea)
-
-
 def process_url(form):
     url = form.cleaned_data['metadata_url']
     data = OneLogin_Saml2_IdPMetadataParser.parse_remote(url)
@@ -38,11 +23,22 @@ def process_raw(form):
     return SAML2Provider.extract_idp_data_from_form(form)
 
 
-processors = {
-    URLMetadataForm: process_url,
-    XMLMetadataForm: process_xml,
-    SAMLForm: process_raw,
-}
+class URLMetadataForm(forms.Form):
+    metadata_url = forms.URLField(label='Metadata URL')
+    processor = process_url
+
+
+class XMLMetadataForm(forms.Form):
+    metadata_xml = forms.CharField(label='Metadata XML', widget=forms.Textarea)
+    processor = process_xml
+
+
+class SAMLForm(forms.Form):
+    idp_entityid = forms.CharField(label='IdP Entity ID')
+    idp_sso_url = forms.URLField(label='IdP Single Sign On URL')
+    idp_slo_url = forms.URLField(label='IdP Single Log Out URL', required=False)
+    idp_x509cert = forms.CharField(label='IdP x509 public certificate', widget=forms.Textarea)
+    processor = process_raw
 
 
 def process_metadata(form_cls, request, helper):
@@ -57,7 +53,7 @@ def process_metadata(form_cls, request, helper):
         return form
 
     try:
-        data = processors[form_cls](form)
+        data = form_cls.processor(form)
     except Exception:
         errors = form._errors.setdefault('__all__', ErrorList())
         errors.append('Failed to parse provided SAML2 metadata')
