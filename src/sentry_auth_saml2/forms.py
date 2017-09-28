@@ -2,25 +2,35 @@ from __future__ import absolute_import
 
 from django import forms
 from django.forms.util import ErrorList
+from django.utils.translation import ugettext_lazy as _
 from onelogin.saml2.idp_metadata_parser import OneLogin_Saml2_IdPMetadataParser
 
-from sentry.auth.providers.saml2 import SAML2Provider
+
+def extract_idp_data_from_parsed_data(data):
+    """
+    Transform data returned by the OneLogin_Saml2_IdPMetadataParser into the
+    expected IdP dict shape.
+    """
+    idp = data.get('idp', {})
+
+    return {
+        'entity_id': idp.get('entityId'),
+        'sso_url': idp.get('singleSignOnService', {}).get('url'),
+        'slo_url': idp.get('singleLogoutService', {}).get('url'),
+        'x509cert': idp.get('x509cert'),
+    }
 
 
 def process_url(form):
     url = form.cleaned_data['metadata_url']
     data = OneLogin_Saml2_IdPMetadataParser.parse_remote(url)
-    return SAML2Provider.extract_idp_data_from_parsed_data(data)
+    return extract_idp_data_from_parsed_data(data)
 
 
 def process_xml(form):
     xml = form.cleaned_data['metadata_xml']
     data = OneLogin_Saml2_IdPMetadataParser.parse(xml)
-    return SAML2Provider.extract_idp_data_from_parsed_data(data)
-
-
-def process_raw(form):
-    return SAML2Provider.extract_idp_data_from_form(form)
+    return extract_idp_data_from_parsed_data(data)
 
 
 class URLMetadataForm(forms.Form):
@@ -34,11 +44,11 @@ class XMLMetadataForm(forms.Form):
 
 
 class SAMLForm(forms.Form):
-    idp_entityid = forms.CharField(label='IdP Entity ID')
-    idp_sso_url = forms.URLField(label='IdP Single Sign On URL')
-    idp_slo_url = forms.URLField(label='IdP Single Log Out URL', required=False)
-    idp_x509cert = forms.CharField(label='IdP x509 public certificate', widget=forms.Textarea)
-    processor = process_raw
+    entity_id = forms.CharField(label='Entity ID')
+    sso_url = forms.URLField(label='Single Sign On URL')
+    slo_url = forms.URLField(label='Single Log Out URL', required=False)
+    x509cert = forms.CharField(label='x509 public certificate', widget=forms.Textarea)
+    processor = lambda d: d
 
 
 def process_metadata(form_cls, request, helper):
