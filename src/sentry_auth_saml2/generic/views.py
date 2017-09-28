@@ -3,15 +3,34 @@ from __future__ import absolute_import, print_function
 from django.core.urlresolvers import reverse
 
 from sentry.auth.view import AuthView, ConfigureView
-from sentry.auth.providers.saml2 import SAML2Provider
 from sentry.utils.http import absolute_uri
 
 from sentry_auth_saml2.forms import (
-    SAMLForm,
-    URLMetadataForm,
-    XMLMetadataForm,
+    AttributeMappingForm, SAMLForm, URLMetadataForm, XMLMetadataForm,
     process_metadata,
 )
+
+
+class SAML2ConfigureView(ConfigureView):
+    def dispatch(self, request, organization, provider):
+        sp_metadata_url = absolute_uri(reverse('sentry-auth-organization-saml-metadata', args=[organization.slug]))
+
+        if request.method != 'POST':
+            saml_form = SAMLForm(provider.config['idp'])
+            attr_mapping_form = AttributeMappingForm(provider.config['attribute_mapping'])
+        else:
+            saml_form = SAMLForm(request.POST)
+            attr_mapping_form = AttributeMappingForm(request.POST)
+
+            if saml_form.is_valid() and attr_mapping_form.is_valid():
+                provider.config['idp'] = saml_form.cleaned_data
+                provider.config['attr_mapping_form'] = attr_mapping_form.cleaned_data
+                provider.save()
+
+        return self.render('sentry_auth_saml2/configure.html', {
+            'sp_metadata_url': sp_metadata_url,
+            'forms': {'saml': saml_form, 'attrs': attr_mapping_form},
+        })
 
 
 class SelectIdP(AuthView):
@@ -40,21 +59,18 @@ class SelectIdP(AuthView):
         })
 
 
-class GenericSAML2ConfigureView(ConfigureView):
-    def dispatch(self, request, organization, auth_provider):
-        sp_metadata_url = absolute_uri(reverse('sentry-auth-organization-saml-metadata', args=[organization.slug]))
-        data = auth_provider.config['idp']
-        if request.POST:
-            data = request.POST
-            form = SAMLForm(data)
-            if form.is_valid():
-                idp_data = SAML2Provider.extract_idp_data_from_form(form)
-                auth_provider.config['idp'] = idp_data
-                auth_provider.save()
-        else:
-            form = SAMLForm(data)
+class MapAttributes(AuthView):
+    def handle(self, request, helper):
+        print(request.session['auth'])
 
-        return self.render('sentry_auth_saml2/configure.html', {
-            'sp_metadata_url': sp_metadata_url,
-            'form': form
+        if 'save_mappings' not in request.POST:
+            form = AttributeMappingForm()
+        else:
+            form = AttributeMappingForm(request.POST)
+            if form.is_valid():
+                helper.bind_state('attribute_mapping', form.cleaned_data)
+                return helper.next_step()
+
+        return self.respond('sentry_auth_saml2/map-attributes.html', {
+            'form': form,
         })

@@ -74,7 +74,26 @@ def process_metadata(form_cls, request, helper):
         return form
 
     helper.bind_state('idp', data)
-    helper.bind_state('contact', request.user.email)
 
     # Data is bound, do not respond with a form to signal the nexts steps
     return None
+
+
+class AttributeMappingForm(forms.Form):
+    # NOTE: These fields explicitly map to the sentry.auth.saml2.Attributes keys
+    identifier = forms.CharField(
+        label='IdP User ID',
+        widget=forms.TextInput(attrs={'placeholder': 'eg. user.uniqueID'}),
+        help_text=_('The IdPs unique ID attribute key for the user. This is '
+                    'what Sentry will used to identify the users identity from '
+                    'the identity provider.'),
+    )
+    user_email = forms.CharField(
+        label='User Email',
+        widget=forms.TextInput(attrs={'placeholder': 'eg. user.email'}),
+        help_text=_('The IdPs email address attribute key for the '
+                    'user. Upon initial linking this will be used to identify '
+                    'the user in Sentry.'),
+    )
+    first_name = forms.CharField(label='First Name', required=False)
+    last_name = forms.CharField(label='Last Name', required=False)
