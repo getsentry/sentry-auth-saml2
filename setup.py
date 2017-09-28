@@ -34,6 +34,8 @@ setup(
         'sentry.apps': [
             'auth_saml2 = sentry_auth_saml2.generic',
             'auth_onelogin = sentry_auth_saml2.onelogin',
+            'auth_okta = sentry_auth_saml2.okta',
+            'auth_auth0 = sentry_auth_saml2.auth0',
         ],
     },
     classifiers=[
