@@ -1,8 +1,21 @@
 from __future__ import absolute_import, print_function
 
-from sentry.auth.providers.saml2 import SAML2Provider, Attributes
+from django import forms
 
-from .views import SelectIdP
+from sentry.auth.providers.saml2 import SAML2Provider, Attributes
+from sentry_auth_saml2.views import make_simple_setup
+from sentry_auth_saml2.forms import URLMetadataForm
+
+
+# Onelogin specifically calls their Metadata URL a 'Issuer URL'
+class OneLoginURLMetadataForm(URLMetadataForm):
+    metadata_url = forms.URLField(label='Issuer URL')
+
+
+SelectIdP = make_simple_setup(
+    OneLoginURLMetadataForm,
+    'sentry_auth_onelogin/select-idp.html',
+)
 
 
 class OneLoginSAML2Provider(SAML2Provider):
