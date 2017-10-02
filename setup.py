@@ -36,6 +36,7 @@ setup(
             'auth_onelogin = sentry_auth_saml2.onelogin',
             'auth_okta = sentry_auth_saml2.okta',
             'auth_auth0 = sentry_auth_saml2.auth0',
+            'auth_rippling = sentry_auth_saml2.rippling',
         ],
     },
     classifiers=[
