@@ -48,7 +48,7 @@ class SAMLForm(forms.Form):
     sso_url = forms.URLField(label='Single Sign On URL')
     slo_url = forms.URLField(label='Single Log Out URL', required=False)
     x509cert = forms.CharField(label='x509 public certificate', widget=forms.Textarea)
-    processor = lambda d: d
+    processor = lambda d: d.cleaned_data
 
 
 def process_metadata(form_cls, request, helper):
