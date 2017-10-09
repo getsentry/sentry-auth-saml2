@@ -1,20 +1,13 @@
 from __future__ import absolute_import, print_function
 
-from django import forms
-
 from sentry.auth.view import AuthView
 from sentry.auth.providers.saml2 import SAML2Provider, Attributes
 from sentry_auth_saml2.views import make_simple_setup
 from sentry_auth_saml2.forms import URLMetadataForm
 
 
-# Rippling specifically calls their Metadata URL a 'Issuer URL'
-class RipplingURLMetadataForm(URLMetadataForm):
-    metadata_url = forms.URLField(label='Issuer URL')
-
-
 SelectIdP = make_simple_setup(
-    RipplingURLMetadataForm,
+    URLMetadataForm,
     'sentry_auth_rippling/select-idp.html',
 )
 
