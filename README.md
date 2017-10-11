@@ -8,8 +8,9 @@ various identity provider support.
 The following identity providers are supported
 
  * [OneLogin](https://www.onelogin.com/)
- * [Okta](https://www.okta.com/) (coming soon)
- * [Auth0](https://auth0.com/) (coming soon)
+ * [Okta](https://www.okta.com/)
+ * [Auth0](https://auth0.com/)
+ * [Rippling](https://rippling.com/)
 
 A generic SAML2 module is also provided, which may be configured with any
 Identity Provider that conforms to the SAML2 specification.
