@@ -16,6 +16,7 @@
 </p>
 
 <form method="post" class="form-stacked">
+  {% csrf_token %}
   {% include "sentry/partial/form_base.html" %}
   <input type="hidden" name="provider" value="onelogin" />
 

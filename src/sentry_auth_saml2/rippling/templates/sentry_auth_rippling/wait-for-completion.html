@@ -15,6 +15,7 @@
 </p>
 
 <form method="post" class="form-stacked">
+  {% csrf_token %}
   <input type="hidden" name="provider" value="rippling" />
 
   <fieldset class="form-actions">
