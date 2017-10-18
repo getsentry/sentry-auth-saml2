@@ -28,7 +28,9 @@ def process_url(form):
 
 
 def process_xml(form):
-    xml = form.cleaned_data['metadata_xml']
+    # cast unicode xml to byte string so lxml won't complain when trying to
+    # parse a xml document with a type declaration.
+    xml = form.cleaned_data['metadata_xml'].encode('utf8')
     data = OneLogin_Saml2_IdPMetadataParser.parse(xml)
     return extract_idp_data_from_parsed_data(data)
 
