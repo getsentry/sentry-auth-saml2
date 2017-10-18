@@ -5,6 +5,8 @@ from django.forms.util import ErrorList
 from django.utils.translation import ugettext_lazy as _
 from onelogin.saml2.idp_metadata_parser import OneLogin_Saml2_IdPMetadataParser
 
+from sentry.http import safe_urlopen
+
 
 def extract_idp_data_from_parsed_data(data):
     """
@@ -23,7 +25,8 @@ def extract_idp_data_from_parsed_data(data):
 
 def process_url(form):
     url = form.cleaned_data['metadata_url']
-    data = OneLogin_Saml2_IdPMetadataParser.parse_remote(url)
+    response = safe_urlopen(url)
+    data = OneLogin_Saml2_IdPMetadataParser.parse(response.content)
     return extract_idp_data_from_parsed_data(data)
 
 
