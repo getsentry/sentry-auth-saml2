@@ -1,2 +1,8 @@
 include setup.py package.json webpack.config.js README.rst MANIFEST.in LICENSE AUTHORS
+recursive-include src/sentry_auth_saml2 *.html
+recursive-include src/sentry_auth_saml2 *.js
+recursive-include src/sentry_auth_saml2 *.jsx
+recursive-include src/sentry_auth_saml2 *.css
+recursive-include src/sentry_auth_saml2 *.js.gz
+recursive-include src/sentry_auth_saml2 *.js.map
 global-exclude *~
