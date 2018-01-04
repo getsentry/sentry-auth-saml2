@@ -25,7 +25,6 @@ setup(
     license='Apache 2.0',
     package_dir={'': 'src'},
     packages=find_packages('src', exclude=['tests']),
-    package_data={'': ['templates/*/*.html']},
     zip_safe=False,
     install_requires=install_requires,
     tests_require=tests_require,
