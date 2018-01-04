@@ -26,3 +26,7 @@ $ pip install https://github.com/getsentry/sentry-auth-saml2/archive/master.zip
 Refer to the Sentry [Single Sign-On
 documentation](https://docs.sentry.io/learn/sso/) for individual SAML Identity
 Provider configurations.
+
+Refer to the [Enabling SSO
+documentation](https://github.com/getsentry/sentry/blob/master/docs/sso.rst#enabling-sso)
+for what feature flags to enable for this plugin.
