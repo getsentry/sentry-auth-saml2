@@ -61,8 +61,6 @@ class SelectIdP(AuthView):
 
 class MapAttributes(AuthView):
     def handle(self, request, helper):
-        print(request.session['auth'])
-
         if 'save_mappings' not in request.POST:
             form = AttributeMappingForm()
         else:
