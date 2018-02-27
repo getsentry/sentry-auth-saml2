@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 
 install_requires = [
-    'python3-saml>=1.2.3'
+    'python3-saml>=1.4.0'
 ]
 
 tests_require = [
