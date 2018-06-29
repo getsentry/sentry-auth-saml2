@@ -15,11 +15,15 @@ def extract_idp_data_from_parsed_data(data):
     """
     idp = data.get('idp', {})
 
+    # In some scenarios the IDP sticks the x509cert in the x509certMulti
+    # parameter
+    cert = idp.get('x509cert', idp.get('x509certMulti', {}).get('signing', [None])[0])
+
     return {
         'entity_id': idp.get('entityId'),
         'sso_url': idp.get('singleSignOnService', {}).get('url'),
         'slo_url': idp.get('singleLogoutService', {}).get('url'),
-        'x509cert': idp.get('x509cert'),
+        'x509cert': cert,
     }
 
 
