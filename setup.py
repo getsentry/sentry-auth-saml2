@@ -11,7 +11,10 @@ install_requires = [
 ]
 
 tests_require = [
-    'flake8>=2.0,<2.1',
+    "exam>=0.5.1",
+    'pytest==4.6.5',
+    "pytest-html==1.22.0",
+    'sentry-flake8==0.1.1',
 ]
 
 setup(

@@ -1,11 +1,8 @@
 .PHONY: clean develop install-tests lint publish test
 
 develop:
-	pip install "pip>=7"
-	pip install -e .
-	make install-tests
-
-install-tests:
+	pip install "pip==19.2.3"
+	SENTRY_LIGHT_BUILD=1 pip install --no-use-pep517 -e ../sentry
 	pip install .[tests]
 
 lint:
