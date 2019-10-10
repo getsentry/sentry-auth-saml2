@@ -28,5 +28,5 @@ documentation](https://docs.sentry.io/learn/sso/) for individual SAML Identity
 Provider configurations.
 
 Refer to the [Enabling SSO
-documentation](https://github.com/getsentry/sentry/blob/master/docs/sso.rst#enabling-sso)
+documentation](https://docs.sentry.io/server/sso/#enabling-sso)
 for what feature flags to enable for this plugin.
