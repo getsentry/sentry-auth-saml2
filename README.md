@@ -1,4 +1,5 @@
 # SAML2 Auth for Sentry
+DEPRECATED: This project now lives in [sentry](https://github.com/getsentry/sentry/tree/master/src/sentry/auth/providers/saml2)
 
 *Note:* SAML2 Authenttication is still currently an experimental feature.
 
